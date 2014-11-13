@@ -1,0 +1,274 @@
+<html>
+  <head>
+    <script src="3rdparty/keymaster.js"></script>
+    <script src="3rdparty/ohm.min.js"></script>
+    <script src="editor.js"></script>
+    <style>
+
+body {
+  font-family: "PT Sans";
+}
+
+editor::before {
+  display: inline-block;
+  border: 1px solid black;
+  border-radius: 4px;
+  background: white;
+  padding: 0 4pt;
+  margin: 2pt;
+  content: attr(name);
+}
+
+editor {
+  position: relative;
+  display: inline-block;
+  background: rgb(0, 200, 0);
+  padding: 2pt;
+  margin: 3pt;
+  box-shadow: 2px 2px 4px 0px rgba(0, 0, 0, .5);
+  border-radius: 2px;
+}
+
+editor cursor {
+  display: none;
+  position: absolute;
+  border-left: 1px solid slateblue;
+  opacity: .75;
+}
+
+editor:focus cursor {
+  display: inline-block;
+}
+
+editor.fail {
+  background: red;
+}
+
+section {
+  display: block;
+  margin-bottom: 8pt;
+  background: rgba(0, 200, 0, .25);
+  padding: 6pt;
+  border-radius: 4px;
+}
+
+section > name {
+  float: right;
+  font-size: 14pt;
+  font-weight: bold;
+  padding: 2pt;
+  text-align: right;
+}
+
+section.fail {
+  background: rgba(200, 0, 0, .25);
+}
+
+testCase {
+  display: block;
+}
+
+    </style>
+  </head>
+  <body>
+    <script>
+
+editorProto.range = function(start, end) {
+  return {
+    startIdx: start,
+    endIdx: end,
+    contents: this.getText().substr(start, end - start)
+  };
+};
+
+var ed;
+
+function tests(testSetName /* , testCase1, testCase2, ... */) {
+  var section = document.createElement('section');
+  document.body.appendChild(section);
+  var name = document.createElement('name');
+  name.appendChild(document.createTextNode(testSetName));
+  section.appendChild(name);
+  for (var idx = 1; idx < arguments.length; idx++) {
+    var testCase = arguments[idx];
+    test(testCase, section);
+  }
+}
+
+function test(testCase, section) {
+  try {
+    ed = editor.create();
+    ed.setAttribute('name', testCase.name);
+    var testCaseNode = document.createElement('testCase');
+    section.appendChild(testCaseNode);
+    testCaseNode.appendChild(ed);
+    testCase.fn.call(ed);
+  } catch(e) {
+    ed.className = 'fail';
+    section.className = 'fail';
+    console.log('test', name, 'threw exception:', e);
+  } finally {
+    ed = undefined;
+  }
+}
+
+function assertEquals(expected, actual) {
+  if (expected !== actual) {
+    ed.className = 'fail';
+    section.className = 'fail';
+    console.log('in', ed.getAttribute('name') + ':', 'expected', expected, 'but got', actual);
+  }
+}
+
+tests('tags',
+  {
+    name: 'nested tags',
+    fn: function() {
+      this.setText('hello world');
+      this.nest(this.range(0, 2), document.createElement('b'));
+      this.nest(this.range(0, 2), document.createElement('i'));
+      assertEquals('<i><b>he</b></i>llo world', this.innerHTML);
+    }
+  },
+  {
+    name: 'adjacent tags',
+    fn: function() {
+      this.setText('hello world');
+      this.nest(this.range(0, 2), document.createElement('b'));
+      this.nest(this.range(2, 4), document.createElement('i'));
+      assertEquals('<b>he</b><i>ll</i>o world', this.innerHTML);
+    }
+  }
+);
+
+tests(
+  'empty tags',
+  {
+    name: 'at beginning',
+    fn: function() {
+      this.setText('hello world');
+      this.nest(this.range(0, 2), document.createElement('b'));
+      this.nest(this.range(0, 0), document.createElement('i'));
+      assertEquals('<i></i><b>he</b>llo world', this.innerHTML);
+    }
+  },
+  {
+    name: 'at end of another tag',
+    fn: function() {
+      this.setText('hello world');
+      this.nest(this.range(0, 2), document.createElement('b'));
+      this.nest(this.range(2, 2), document.createElement('i'));
+      assertEquals('<b>he</b><i></i>llo world', this.innerHTML);
+    }
+  },
+  {
+    name: 'at end',
+    fn: function() {
+      this.setText('hello world');
+      this.nest(this.range(0, 2), document.createElement('b'));
+      this.nest(this.range(this.getText().length, this.getText().length), document.createElement('i'));
+      assertEquals('<b>he</b>llo world<i></i>', this.innerHTML);
+    }
+  }
+);
+
+tests(
+  'newline',
+  {
+    name: 'newline is last char of nesting interval',
+    fn: function() {
+      this.setText('12\n3');
+      this.nest(this.range(0, 2), document.createElement('b'));
+      this.nest(this.range(0, 3), document.createElement('i'));
+      assertEquals('<i><b>12</b>\n</i>3', this.innerHTML);
+    }
+  },
+  {
+    name: 'same test, different character',
+    fn: function() {
+      this.setText('12X3');
+      this.nest(this.range(0, 2), document.createElement('b'));
+      this.nest(this.range(0, 3), document.createElement('i'));
+      assertEquals('<i><b>12</b>X</i>3', this.innerHTML);
+    }
+  },
+  {
+    name: 'newline is first char of nesting interval',
+    fn: function() {
+      this.setText('\n123');
+      this.nest(this.range(1, 3), document.createElement('b'));
+      this.nest(this.range(0, 3), document.createElement('i'));
+      assertEquals('<i>\n<b>12</b></i>3', this.innerHTML);
+    }
+  },
+  {
+    name: 'same test, different character',
+    fn: function() {
+      this.setText('X123');
+      this.nest(this.range(1, 3), document.createElement('b'));
+      this.nest(this.range(0, 3), document.createElement('i'));
+      assertEquals('<i>X<b>12</b></i>3', this.innerHTML);
+    }
+  }
+);
+
+tests(
+  'empty interval',
+  {
+    name: 'at beginning',
+    fn: function() {
+      this.setText('abc');
+      this.nest(this.range(0, 0), document.createElement('b'));
+      assertEquals('<b></b>abc', this.innerHTML);
+    }
+  },
+  {
+    name: 'at middle',
+    fn: function() {
+      this.setText('abc');
+      this.nest(this.range(2, 2), document.createElement('b'));
+      assertEquals('ab<b></b>c', this.innerHTML);
+    }
+  },
+  {
+    name: 'at end',
+    fn: function() {
+      this.setText('abc');
+      this.nest(this.range(3, 3), document.createElement('b'));
+      assertEquals('abc<b></b>', this.innerHTML);
+    }
+  },
+  {
+    name: 'at empty element',
+    fn: function() {
+      this.setText('abc');
+      this.nest(this.range(2, 2), document.createElement('b'));
+      this.nest(this.range(2, 2), document.createElement('i'));
+      assertEquals('ab<b></b><i></i>c', this.innerHTML);
+    }
+  }
+);
+
+tests(
+  'decorate',
+  {
+    name: 'pi',
+    fn: function() {
+      this.setText('1+pi*2');
+      var pi = document.createElement('i');
+      pi.appendChild(document.createTextNode('\u03C0'));
+      this.decorate(this.range(2, 4), pi);
+      assertEquals('1+<i source="pi">\u03C0</i>*2', this.innerHTML);
+    }
+  }
+);
+
+
+    </script>
+    <section>
+      <name>Demo</name>
+      <iframe style="display: block; width: 800px; height: 700px; border: 0;" src="demo/demo.html"></iframe>
+    </section>
+  </body>
+</html>
+

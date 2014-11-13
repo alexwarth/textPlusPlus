@@ -1,0 +1,143 @@
+editor {
+  display: block;
+  padding: 8pt;
+  border: 1px solid rgba(0, 0, 0, .1);
+  box-shadow: 2px 2px 16px 0px rgba(0, 0, 0, .5);
+  overflow: auto;
+  font-family: Times, "Times New Roman", serif;
+  font-size: 18pt;
+  outline: none;
+  margin-bottom: 15px;
+}
+
+editor:focus {
+  border: 1px solid rgba(0, 0, 255, .2);
+}
+
+editor.oops, editor.oops:focus {
+  border: 1px solid rgba(255, 0, 0, .3);
+}
+
+editor unrecognizedInput {
+  color: red;
+}
+
+#twoDee {
+  min-height: 150px;
+  background: azure;
+}
+
+#twoDee::after {
+  content: attr(value);
+  color: slateblue;
+}
+
+#twoDee ident {
+  font-style: italic;
+}
+
+#twoDee:focus paren > gray {
+  font-size: 100%;
+  opacity: 1;
+}
+
+#twoDee:not(:focus) paren > gray {
+  font-size: 100%;
+  opacity: 1;
+}
+
+#twoDee:focus power > exponent > paren > gray,
+#twoDee:focus fraction > numerator > paren > gray,
+#twoDee:focus fraction > denominator > paren > gray {
+  opacity: .25 !important;
+}
+
+#twoDee:not(:focus) power > exponent > paren > gray,
+#twoDee:not(:focus) fraction > numerator > paren > gray,
+#twoDee:not(:focus) fraction > denominator > paren > gray {
+  font-size: 0;
+}
+
+#twoDee fraction {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#twoDee numerator > gray {
+  vertical-align: bottom;
+}
+
+#twoDee numerator {
+  display: inline-block;
+  padding: 0 2pt;
+}
+
+#twoDee denominator {
+  display: block;
+  border-top: 2px solid black;
+  padding: 0 2pt;
+}
+
+#twoDee power > exponent {
+  font-size: 65%;
+  vertical-align: super;
+}
+
+#twoDee:not(:focus) gray {
+  font-size: 0;
+}
+
+#twoDee:focus gray {
+  opacity: .25;
+}
+
+#twoDee number:hover {
+  text-shadow: 0px 0px 8pt rgba(255, 255, 0, 1);
+}
+
+#tree {
+  min-height: 300px;
+  background: ivory;
+}
+
+#tree *:not(editorCursor):not(editorSpan) {
+  display: inline-block;
+  font-size: 18pt;
+  margin: 0 1pt 1pt 1pt;
+  text-align: center;
+  vertical-align: top;
+  transition: .5s ease;
+}
+
+#tree *:not(editorCursor):not(editorSpan)::after {
+  font-family: "PT Sans", Arial, Helvetica, sans-serif;
+  display: block;
+  font-size: 10pt;
+  color: slateblue;
+  margin-top: 2pt;
+  border-top: 1pt solid slateblue;
+  transition: opacity .5s ease;
+}
+
+#tree.oops *:not(editorCursor):not(editorSpan)::after {
+  opacity: .25;
+  transition: opacity .5s ease;
+}
+
+#tree expr::after    { content: 'expr'; }
+#tree addExpr::after { content: 'addExpr'; }
+#tree plus::after    { content: 'plus'; }
+#tree minus::after   { content: 'minus'; }
+#tree mulExpr::after { content: 'mulExpr'; }
+#tree times::after   { content: 'times'; }
+#tree divide::after  { content: 'divide'; }
+#tree expExpr::after { content: 'expExpr'; }
+#tree power::after   { content: 'power'; }
+#tree priExpr::after { content: 'priExpr'; }
+#tree paren::after   { content: 'paren'; }
+#tree pos::after     { content: 'pos'; }
+#tree neg::after     { content: 'neg'; }
+#tree ident::after   { content: 'ident'; }
+#tree number::after  { content: 'number'; }
+

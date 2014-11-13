@@ -1,0 +1,17 @@
+programmer:
+  -- gives the framework a DOM tree
+    * nodes w/ a "source" property are atomic w.r.t. to editing,
+      the framework never looks inside them.
+      -- backspace deletes whole thing, all at once
+      -- this is useful for doing decoration stuff (source = '')
+      -- also useful for representing keywords as graphics (ST-like up-arrow image would have source = 'return')
+    * text nodes are fine, and allow cursor and editing operations inside
+
+framework:
+  -- converts programmer-provided DOM to a string
+  -- keeps track of cursor position
+  -- displays cursor
+  -- processes user events (keyboard and pointer events)
+    * mutates user-provided DOM when key press events happen
+      (but also asks programmer for a new DOM using updated string)
+
