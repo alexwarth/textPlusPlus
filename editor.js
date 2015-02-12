@@ -242,7 +242,7 @@ var editorProto = {
   },
 
   showState: function() {
-    //console.log('[' + this.getText(true) + '], cursorPos =', this.cursorPos);
+    console.log('[' + this.getText(true) + '], cursorPos =', this.cursorPos);
   },
 
   getCursorPos: function(optNode) {
