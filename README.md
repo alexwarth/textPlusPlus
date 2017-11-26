@@ -3,7 +3,7 @@
 
 [Bret Victor's Scrubbing Calculator](http://worrydream.com/ScrubbingCalculator/) lets you type mathematical expressions, and as you type, some of your text gets "super powers": it automagically turns into user interface components. E.g., you can scrub numbers to change their values, but they're still text and can be edited as such. It feels pretty fluid and magical. I spent some time thinking about how to make this kind of thing easier to implement.
 
-I also got interested in the idea of creating editable views of textual inputs. I'm not a big fan of the two-pane user interfaces that are popular these days where you type some text on the left, and see the rendered output on the right. (These are a huge step backwards considering [WYSIYG])(https://en.wikipedia.org/wiki/WYSIWYG) has been around since the 70s!)
+I also got interested in the idea of creating editable views of textual inputs. I'm not a big fan of the two-pane user interfaces that are popular these days where you type some text on the left, and see the rendered output on the right. (These are a huge step backwards considering [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) has been around since the 70s!)
 
 This is a little experiment I did along these lines. The idea is that the input is really just text, but as you type it gets rendered to make it look like the thing you're trying to create. You still see all of the characters that you typed, so you can edito or delete them if you want, but they're de-emphasized so that they don't obscure the view.
 
