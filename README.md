@@ -1,8 +1,8 @@
 "Text++" Interfaces (or: Editable Views of Textual Inputs)
 ==========================================================
 
-[![Live demo 1](https://img.shields.io/badge/Live%20demo-%E2%86%92-9D6EB3.svg?style=flat-square)](http://alexwarth.github.io/projects/textPlusPlus/demo/demo1.html)
-[![Live demo 2](https://img.shields.io/badge/Live%20demo-%E2%86%92-9D6EB3.svg?style=flat-square)](http://alexwarth.github.io/projects/textPlusPlus/demo/demo2.html)
+[![Live demo 1](https://img.shields.io/badge/Live%20demo%20%231-%E2%86%92-9D6EB3.svg?style=flat-square)](http://alexwarth.github.io/projects/textPlusPlus/demo/demo1.html)
+[![Live demo 2](https://img.shields.io/badge/Live%20demo%20%232-%E2%86%92-9D6EB3.svg?style=flat-square)](http://alexwarth.github.io/projects/textPlusPlus/demo/demo2.html)
 
 [Bret Victor's Scrubbing Calculator](http://worrydream.com/ScrubbingCalculator/) lets you type mathematical expressions, and as you type, some of your text gets "super powers": it automagically turns into user interface components. E.g., you can scrub numbers to change their values, but they're still text and can be edited as such. It feels pretty fluid and magical. I spent some time thinking about how to make this kind of thing easier to implement.
 
