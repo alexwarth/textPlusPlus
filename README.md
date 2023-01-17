@@ -8,7 +8,7 @@
 
 I also got interested in the idea of creating editable views of textual inputs. I'm not a big fan of the two-pane user interfaces that are popular these days where you type some text on the left, and see the rendered output on the right. (These are a huge step backwards considering [WYSIWYG](https://en.wikipedia.org/wiki/WYSIWYG) has been around since the 70s!)
 
-This is a little experiment I did along these lines. The idea is that the input is really just text, but as you type it gets rendered to make it look like the thing you're trying to create. You still see all of the characters that you typed, so you can edito or delete them if you want, but they're de-emphasized so that they don't obscure the view.
+This is a little experiment I did along these lines. The idea is that the input is really just text, but as you type it gets rendered to make it look like the thing you're trying to create. You still see all of the characters that you typed, so you can edit or delete them if you want, but they're de-emphasized so that they don't obscure the view.
 
 A few things that are worth pointing out:
 
